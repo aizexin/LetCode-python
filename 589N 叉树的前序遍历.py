@@ -8,11 +8,15 @@ class Node:
 class Solution:
     a = list()
     def preorder(self, root: 'Node') -> List[int]:
-        p = root
-        if p == None:
-            return a
-        self.a.append(p.val)
-        for child in p.children:
-            self.preorder(child)
-        return self.a
+        a = []
+        
+        def dps(root):
+            if root == None:
+                return a
+            a.append(root.val)
+            for child in root.children:
+                dps(child)
+        dps(root)
+
+        return a
     
