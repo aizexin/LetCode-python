@@ -1,7 +1,14 @@
 import os , codecs , shutil
 import argparse
 
-def replaceFileWord(oldWord, newWord ,dirPath ,fileName,tempfilePath):
+projectName='精简IM'
+schemes1='jingjian'
+schemes2='jianjing'
+new1=''
+new2=''
+new3=''
+
+def replaceFileWord(dirPath ,fileName,tempfilePath):
     filePath = os.path.join(dirPath, fileName)
     tempFileName = "2-" + fileName
     tempPath = os.path.join(dirPath,tempFileName)
@@ -11,9 +18,6 @@ def replaceFileWord(oldWord, newWord ,dirPath ,fileName,tempfilePath):
     else:
         print('文件路径不存在' + filePath)
     # 创建原来的名字
-    # file = os.getcwd()
-    # if not os.path.exists(file + fileName):
-        # os.makedirs(filePath, mode=0o777)
     shutil.copyfile(tempfilePath,filePath)
     
     readF = open(tempPath)
@@ -22,7 +26,9 @@ def replaceFileWord(oldWord, newWord ,dirPath ,fileName,tempfilePath):
     while True:
         line :str = readF.readline()
         if line:
-            newLine = line.replace(oldWord,newWord)
+            newLine = line.replace(projectName,new1)
+            newLine = newLine.replace(schemes1,new2)
+            newLine = newLine.replace(schemes2,new3)
             writeF.write(newLine)
         else:
             break
@@ -32,56 +38,71 @@ def replaceFileWord(oldWord, newWord ,dirPath ,fileName,tempfilePath):
     print('替换文件'+ fileName+'完成....')
 
 # 替代一个文件
-def replaceSingleDir(oldWord, newWord,dirPath,tempfilePath):
+def replaceSingleDir(dirPath,tempfilePath):
     allPath = os.listdir(dirPath)
     for fileName in allPath:
         currentPath = os.path.join(dirPath, fileName)
         if '.app' in fileName:
             continue
+        if fileName == 'BUILD':
+            replaceFileWord(dirPath,fileName,tempfilePath)
         if os.path.isdir(currentPath):
-            replaceSingleDir(oldWord,newWord, currentPath,tempfilePath)
+            replaceSingleDir( currentPath,tempfilePath)
         else:
             # 如果不是。string就跳过
             if '.strings' not in currentPath or fileName == 'empty.strings':
                 continue
-            replaceFileWord(oldWord,newWord,dirPath,fileName,tempfilePath)
+            replaceFileWord(dirPath,fileName,tempfilePath)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='replaceWord')
+
     parser.add_argument(
-        '--oldWord',
-        required=False,
-        help='要被替换的',
-        type=str
-        # metavar='path'
-    )
-    parser.add_argument(
-        '--newWord',
-        required=False,
-        help='新替换的',
+        '--projectName',
+        required=True,
+        help='项目名称',
         type=str
     )
     parser.add_argument(
-        '--newWord2',
-        required=False,
-        help='新替换的2',
+        '--schemes1',
+        required=True,
+        help='schemes1',
+        type=str
+    )
+    parser.add_argument(
+        '--schemes2',
+        required=True,
+        help='schemes2',
         type=str
     )
     parser.add_argument(
         '--tempFilePath',
-        required=False,
-        help='Use custom bazel user root (useful when reproducing a build)',
+        required=True,
+        help='临时文件绝对路径',
         metavar='path'
     )
 
     args = parser.parse_args()
     print('参数===',args)
-    currentDirPath = os.getcwd() + ''
+    currentDirPath = os.getcwd() + '/Esayim'
     print('currentDirPath===',currentDirPath)
-    old = args.oldWord
-    new = args.newWord
-    new2 = args.newWord2
-    tempfilePath = args.tempFilePath
+    new1 = args.projectName
+    new2 = args.schemes1
+    new3 = args.schemes2
+    if len(new1) <= 0:
+        print('请输入项目名称')
+        exit()
+    if len(new2) <= 0:
+        print('请输入schemes1')
+        exit()
+    if len(new3) <= 0:
+        print('请输入schemes2')
+        exit()
 
-    replaceSingleDir('精简IM',new,currentDirPath,tempfilePath)
-    replaceSingleDir('jianjin',new2,currentDirPath,tempfilePath)
+    tempfilePath = args.tempFilePath
+    if len(tempfilePath) <= 0:
+        print('请输入临时文件绝对路径')
+        exit()
+
+    replaceSingleDir(currentDirPath,tempfilePath)
+
