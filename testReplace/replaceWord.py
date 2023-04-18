@@ -1,5 +1,6 @@
 import os , codecs , shutil
 import argparse
+import sys
 
 projectName='精简IM'
 schemes1='jingjian'
@@ -91,18 +92,18 @@ if __name__ == '__main__':
     new3 = args.schemes2
     if len(new1) <= 0:
         print('请输入项目名称')
-        exit()
+        sys.exit(-1)
     if len(new2) <= 0:
         print('请输入schemes1')
-        exit()
+        sys.exit(-1)
     if len(new3) <= 0:
         print('请输入schemes2')
-        exit()
+        sys.exit(-1)
 
     tempfilePath = args.tempFilePath
     if len(tempfilePath) <= 0:
         print('请输入临时文件绝对路径')
-        exit()
+        sys.exit(-1)
 
     replaceSingleDir(currentDirPath,tempfilePath)
 
