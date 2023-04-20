@@ -1,8 +1,7 @@
-import os , shutil
+import os
 from typing import List
-from collections import defaultdict
 
-# 获取图片名字返回名字数组 
+# 获取图片名字返回名字数组
 def getImagePath(basePath, dirPath, pathList) -> List[str]:
     if len(dirPath) > 0:
         imagesPath = os.path.join(basePath, dirPath)
@@ -25,7 +24,7 @@ def getImagePath(basePath, dirPath, pathList) -> List[str]:
     return pathList
 
 # 修改一个文件
-def changeSingleFile(basePath, dirPath, fileName, pathDict) -> defaultdict:
+def changeSingleFile(basePath, dirPath, fileName, pathDict):
     if len(dirPath) > 0:
         fullPath = basePath + '/' + dirPath + '/' + fileName
         tempFileFullPath = basePath + '/' + dirPath + '/' + '副本' + fileName
@@ -57,9 +56,9 @@ def changeSingleFile(basePath, dirPath, fileName, pathDict) -> defaultdict:
     os.remove(fullPath)
     os.rename(tempFileFullPath, fullPath)
     print('替换',fileName,'完成....')
-    return pathDict
+
 # 遍历一个文件夹
-def lookSingleDir(basePath, dirPath, pathDict) -> defaultdict:
+def lookSingleDir(basePath, dirPath, pathDict):
     
     allPath :List[str] = os.listdir(os.path.join(basePath, dirPath))
     for fileName in allPath:
@@ -74,8 +73,8 @@ def lookSingleDir(basePath, dirPath, pathDict) -> defaultdict:
         else:
             # 如果是文件
             if fullPath.endswith('.swift'):
-                pathDict = changeSingleFile(basePath,dirPath,fileName,pathDict)
-    return pathDict
+                changeSingleFile(basePath,dirPath,fileName,pathDict)
+
 
 def writeToFile(array, path):
     if not os.path.exists(path):
@@ -100,7 +99,7 @@ if __name__ == '__main__':
     for path in paths:
         pathDict.setdefault(path, 0)
     
-    pathDict = lookSingleDir(basePath,'',pathDict)    
+    lookSingleDir(basePath,'',pathDict)
 
     print('替换完成...')
    
