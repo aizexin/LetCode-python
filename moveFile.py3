@@ -1,13 +1,16 @@
 import os, shutil
-from typing import List
+from typing import List, Optional
 
-def removeFile(nameList :List[List[str]], newFolder :str):
-    basePath = os.getcwd()
-    folderPath = os.path.join(basePath,newFolder)
+def removeFile(baseFolder :Optional[str] = os.getcwd(), nameList :List[List[str]] = [], newFolderName :str = '',oldFolderPathWithBasePath :str = None):
+    
+    folderPath = os.path.join(baseFolder,newFolderName)
     if os.path.exists(folderPath) == False:
         os.mkdir(folderPath)
-    
-    allFileName = os.listdir()
+    if oldFolderPathWithBasePath:
+        oldListDir = os.path.join(baseFolder,oldFolderPathWithBasePath)
+    else:
+        oldListDir = baseFolder
+    allFileName = os.listdir(path=oldListDir)
     
     for fileName in allFileName:
         for dayIndex, dayNameList in enumerate(nameList, start=1):
@@ -18,10 +21,10 @@ def removeFile(nameList :List[List[str]], newFolder :str):
                     subName = temp[1]
                 
                 if subName in fileName:
-                    newName = str(dayIndex) + '-' + str(numberIndex) + '-' + fileName
+                    newName = str(dayIndex) + '-' + str(numberIndex) + '-' + subName
                     if os.path.exists(fileName):
                         os.rename(fileName, newName)
-                    filePath = os.path.join(basePath, newName)
+                    filePath = os.path.join(baseFolder, newName)
                     # newPath = os.path.join(filePath, folderPath)
                     if os.path.exists(filePath):
                         shutil.move(filePath, folderPath)
@@ -44,5 +47,5 @@ array = [
           ['844. 比较含退格的字符串','394. 字符串解码'],
           ['1046. 最后一块石头的重量','692. 前K个高频单词']
           ]
-removeFile(array, "Level1")
+removeFile(nameList=array,newFolderName= "Level1", oldFolderPathWithBasePath="Level1")
 
