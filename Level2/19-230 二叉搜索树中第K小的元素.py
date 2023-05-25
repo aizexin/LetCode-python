@@ -1,6 +1,6 @@
 # Definition for a binary tree node.
 from typing import Optional, List
-from my_package.TreeFunction import createTree
+from CommonFunction.TreeFunction import createTree
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val

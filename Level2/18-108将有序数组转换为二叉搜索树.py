@@ -1,5 +1,5 @@
 from typing import Optional, List
-from my_package.TreeFunction import createTree, showTreeHierarchcalTravel
+from CommonFunction.TreeFunction import createTree, showTreeHierarchcalTravel
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
