@@ -1,5 +1,5 @@
 from typing import List
-
+# 快速排序
 def quickSort(array :List, leftIndex, rightIndex):
     
     def quickSingle( tempLeftIndex, tempRightIndex):
